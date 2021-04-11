@@ -4,71 +4,103 @@
 namespace App\Domain\Neighbour;
 
 
-use App\Domain\Common\Email;
-use App\Domain\Common\PersonalName;
-
 class Neighbour
 {
 
-  private NeighbourId $id;
-  private Email $email;
-  private PersonalName $name;
+    private string $id;
+    private string $email;
+    private string $firstname;
+    private string $lastname;
+    private string $password;
 
-  /**
-   * @return NeighbourId
-   */
-  public function getId(): NeighbourId
-  {
-    return $this->id;
-  }
+    /**
+     * Neighbour constructor.
+     * @param string $id
+     * @param string $email
+     * @param string $firstname
+     * @param string $lastname
+     * @param string $password
+     */
+    public function __construct(string $id, string $email, string $firstname, string $lastname, string $password)
+    {
+        $this->id = $id;
+        $this->email = $email;
+        $this->firstname = $firstname;
+        $this->lastname = $lastname;
+        $this->password = $password;
+    }
 
-  /**
-   * @param NeighbourId $id
-   */
-  public function setId(NeighbourId $id): void
-  {
-    $this->id = $id;
-  }
+    /**
+     * @return string
+     */
+    public function getId(): string
+    {
+        return $this->id;
+    }
 
-  /**
-   * @return Email
-   */
-  public function getEmail(): Email
-  {
-    return $this->email;
-  }
+    /**
+     * @return string
+     */
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
 
-  /**
-   * @param Email $email
-   */
-  public function setEmail(Email $email): void
-  {
-    $this->email = $email;
-  }
+    /**
+     * @param string $email
+     */
+    public function setEmail(string $email): void
+    {
+        $this->email = $email;
+    }
 
-  /**
-   * @return PersonalName
-   */
-  public function getName(): PersonalName
-  {
-    return $this->name;
-  }
+    /**
+     * @return string
+     */
+    public function getFirstname(): string
+    {
+        return $this->firstname;
+    }
 
-  /**
-   * @param PersonalName $name
-   */
-  public function setName(PersonalName $name): void
-  {
-    $this->name = $name;
-  }
+    /**
+     * @param string $firstname
+     */
+    public function setFirstname(string $firstname): void
+    {
+        $this->firstname = $firstname;
+    }
 
-  /**
-   * @param NeighbourId|null $id
-   * @return NeighbourBuilder
-   */
-  public static function builder(?NeighbourId $id = null): NeighbourBuilder
-  {
-    return new NeighbourBuilder($id);
-  }
+    /**
+     * @return string
+     */
+    public function getLastname(): string
+    {
+        return $this->lastname;
+    }
+
+    /**
+     * @param string $lastname
+     */
+    public function setLastname(string $lastname): void
+    {
+        $this->lastname = $lastname;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    /**
+     * @param string $password
+     */
+    public function setPassword(string $password): void
+    {
+        $this->password = $password;
+    }
+
 
 }

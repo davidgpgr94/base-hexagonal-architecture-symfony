@@ -1,0 +1,8 @@
+parameters:
+
+services:
+
+  uuid.generator:
+    class: Ramsey\Uuid\UuidInterface
+    factory: ['Ramsey\Uuid\Uuid', 'uuid4']
+

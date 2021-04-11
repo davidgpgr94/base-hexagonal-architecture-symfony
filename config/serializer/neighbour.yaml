@@ -1,0 +1,4 @@
+App\Domain\Neighbour\Neighbour:
+  attributes:
+    password:
+      ignore: true
