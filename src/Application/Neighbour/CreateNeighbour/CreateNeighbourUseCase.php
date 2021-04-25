@@ -39,7 +39,7 @@ class CreateNeighbourUseCase
      */
     public function create(CreateNeighbourCommand $command): CreateNeighbourResponse
     {
-        // $this->ensureEmailIsNotUsed($command->getEmail());
+        $this->ensureEmailIsNotUsed($command->getEmail());
         $encodedPassword = $this->encodePassword($command->getRawPassword());
         $id = $this->generateNeighbourId();
 
