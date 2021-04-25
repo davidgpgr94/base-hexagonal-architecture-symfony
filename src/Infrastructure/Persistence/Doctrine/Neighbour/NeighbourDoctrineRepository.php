@@ -9,7 +9,7 @@ use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
 
 use App\Domain\Neighbour\Neighbour as NeighbourDomain;
-use App\Domain\Neighbour\Services\NeighbourRepository as INeighbourRepository;
+use App\Domain\Neighbour\Services\NeighbourRepository;
 
 
 /**
@@ -18,7 +18,7 @@ use App\Domain\Neighbour\Services\NeighbourRepository as INeighbourRepository;
  * @method Neighbour[]      findAll()
  * @method Neighbour[]      findBy(array $criteria, ?array $orderBy = null, $limit = null, $offset = null)
  */
-class NeighbourRepository extends ServiceEntityRepository implements INeighbourRepository
+class NeighbourDoctrineRepository extends ServiceEntityRepository implements NeighbourRepository
 {
     private NeighbourDoctrineParser $neighbourDoctrineParser;
 
