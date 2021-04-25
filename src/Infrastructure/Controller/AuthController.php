@@ -26,7 +26,7 @@ class AuthController extends AbstractController
      * @param LoginUseCase $loginUseCase
      * @return JsonResponse
      */
-    public function login(Request $req, LoginUseCase $loginUseCase)
+    public function login(Request $req, LoginUseCase $loginUseCase): JsonResponse
     {
         $email = $req->request->get('email');
         $password = $req->request->get('password');
