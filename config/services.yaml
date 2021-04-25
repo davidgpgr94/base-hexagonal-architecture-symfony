@@ -24,9 +24,15 @@ services:
         exclude:
             - '../src/DependencyInjection/'
             - '../src/Domain/'
-            - '../src/Infrastructure/Persistence/Doctrine/Entity/'
+            - '../src/Application/**/*Command.php'
+            - '../src/Application/**/*Response.php'
+            - '../src/Infrastructure/Persistence/Doctrine/'
             - '../src/Kernel.php'
             - '../src/Tests/'
+            - '../migrations'
+
+    App\Infrastructure\Persistence\Doctrine\:
+        resource: '../src/Infrastructure/Persistence/Doctrine/**/*Parser.php'
 
     App\Domain\Shared\:
         resource: '../src/Domain/Shared/'
