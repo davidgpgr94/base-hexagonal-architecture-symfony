@@ -42,9 +42,9 @@ services:
 
     App\Infrastructure\Persistence\InFile\NeighbourInFileRepository: ~
 
-    App\Infrastructure\Persistence\Doctrine\Neighbour\NeighbourRepository: ~
+    App\Infrastructure\Persistence\Doctrine\Neighbour\NeighbourDoctrineRepository: ~
 
-    App\Domain\Neighbour\Services\NeighbourRepository: '@App\Infrastructure\Persistence\Doctrine\Neighbour\NeighbourRepository'
+    App\Domain\Neighbour\Services\NeighbourRepository: '@App\Infrastructure\Persistence\Doctrine\Neighbour\NeighbourDoctrineRepository'
 
     App\Domain\Shared\IdGenerator:
         arguments:
