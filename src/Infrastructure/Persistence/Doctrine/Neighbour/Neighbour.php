@@ -7,7 +7,7 @@ namespace App\Infrastructure\Persistence\Doctrine\Neighbour;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=NeighbourRepository::class)
+ * @ORM\Entity(repositoryClass=NeighbourDoctrineRepository::class)
  */
 class Neighbour
 {
