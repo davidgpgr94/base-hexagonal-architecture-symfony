@@ -8,13 +8,21 @@ use App\Application\Neighbour\CreateNeighbour\CreateNeighbourCommand;
 use App\Application\Neighbour\CreateNeighbour\CreateNeighbourUseCase;
 use App\Domain\Exception\IdGenerationAttemptsExceeded;
 use App\Domain\Neighbour\Exceptions\NeighbourEmailAlreadyInUse;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Infrastructure\Api\Response\InternalServerErrorResponse;
+use App\Infrastructure\Api\Response\Neighbour\NeighbourCreatedResponse;
+use App\Infrastructure\Api\Response\Neighbour\NeighbourEmailAlreadyInUseResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class NeighbourController extends AbstractController
+/**
+ * Class NeighbourController
+ *
+ * @Route("/api")
+ *
+ * @package App\Infrastructure\Controller
+ */
+class NeighbourController extends BaseController
 {
 
     /**
@@ -33,16 +41,16 @@ class NeighbourController extends AbstractController
         $command = new CreateNeighbourCommand($email, $password, $firstname, $lastname);
 
         try {
-            $response = $createNeighbourUseCase->create($command);
+            $useCaseResponse = $createNeighbourUseCase->create($command);
 
-            return $this->json(
-                $response->getNeighbour(),
-                Response::HTTP_CREATED
-            );
+            $response = new NeighbourCreatedResponse($useCaseResponse->getNeighbour());
+            return $this->response($response);
         } catch (NeighbourEmailAlreadyInUse $e) {
-            return $this->json(['message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+            $response = new NeighbourEmailAlreadyInUseResponse($e->getMessage());
+            return $this->response($response);
         } catch (IdGenerationAttemptsExceeded | \Exception $e) {
-            return $this->json(['message' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+            $response = new InternalServerErrorResponse($e->getMessage());
+            return $this->response($response);
         }
     }
 

@@ -10,14 +10,37 @@ use App\Application\Auth\Login\LoginUseCase;
 use App\Domain\Neighbour\Exceptions\NeighbourNotFoundByEmail;
 use App\Domain\Neighbour\Exceptions\NeighbourWrongPassword;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Infrastructure\Api\Response\Auth\BadCredentialsResponse;
+use App\Infrastructure\Api\Response\Auth\SuccessLoginResponse;
+use App\Infrastructure\Security\Jwt\JwtNeighbourParser;
+
+use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
+
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class AuthController extends AbstractController
+class AuthController extends BaseController
 {
+    /**
+     * @var JwtNeighbourParser
+     */
+    private JwtNeighbourParser $jwtNeighbourParser;
+    /**
+     * @var JWTTokenManagerInterface
+     */
+    private JWTTokenManagerInterface $jwtTokenManager;
+
+    /**
+     * AuthController constructor.
+     * @param JwtNeighbourParser $jwtNeighbourParser
+     * @param JWTTokenManagerInterface $jwtTokenManager
+     */
+    public function __construct(JwtNeighbourParser $jwtNeighbourParser, JWTTokenManagerInterface $jwtTokenManager)
+    {
+        $this->jwtNeighbourParser = $jwtNeighbourParser;
+        $this->jwtTokenManager = $jwtTokenManager;
+    }
 
     /**
      * @Route("/auth/login", methods="POST", name="auth_login")
@@ -34,16 +57,22 @@ class AuthController extends AbstractController
         $command = new LoginCommand($email, $password);
 
         try {
-            $response = $loginUseCase->login($command);
+            $useCaseResponse = $loginUseCase->login($command);
 
-            return $this->json(
-                $response->getNeighbour(),
-                Response::HTTP_OK
-            );
-        } catch (NeighbourNotFoundByEmail $e) {
-            return $this->json(['message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
-        } catch (NeighbourWrongPassword $e) {
-            return $this->json(['message' => $e->getMessage()], Response::HTTP_UNAUTHORIZED);
+            if (is_null($useCaseResponse->getNeighbour())) {
+                $response = new BadCredentialsResponse();
+                return $this->response($response);
+            }
+
+            $jwtNeighbour = $this->jwtNeighbourParser->toJwtPayload($useCaseResponse->getNeighbour());
+
+            $token = $this->jwtTokenManager->createFromPayload($jwtNeighbour, $jwtNeighbour->getPayload());
+
+            $response = new SuccessLoginResponse($token);
+            return $this->response($response);
+        } catch (NeighbourNotFoundByEmail | NeighbourWrongPassword $e) {
+            $response = new BadCredentialsResponse($e->getMessage());
+            return $this->response($response);
         }
     }
 
