@@ -67,14 +67,20 @@ class NeighbourDoctrineRepository extends ServiceEntityRepository implements Nei
 
     public function update(NeighbourDomain $neighbour): void
     {
-        $neighbourDoctrine = $this->find($neighbour->getId());
-        $neighbourDoctrine->setEmail($neighbour->getEmail())
-            ->setFirstname($neighbour->getFirstname())
-            ->setLastname($neighbour->getLastname())
-            ->setPassword($neighbour->getPassword());
-        $entityManager = $this->getEntityManager();
-        try {
-            $entityManager->flush();
-        } catch (OptimisticLockException | ORMException $e) { }
+        $this->save($neighbour);
+//        $neighbourParsed = $this->neighbourDoctrineParser->toDoctrine($neighbour);
+//
+//        $neighbourDoctrine = $this->find($neighbour->getId());
+//        $neighbourDoctrine->setEmail($neighbour->getEmail())
+//            ->setFirstname($neighbour->getFirstname())
+//            ->setLastname($neighbour->getLastname())
+//            ->setPassword($neighbour->getPassword())
+//            ->setCreatedAt($neighbourParsed->getCreatedAt())
+//            ->setUpdatedAt($neighbourParsed->getUpdatedAt());
+//        $entityManager = $this->getEntityManager();
+//        try {
+//            $entityManager->persist($neighbourParsed);
+//            $entityManager->flush();
+//        } catch (OptimisticLockException | ORMException $e) { }
     }
 }

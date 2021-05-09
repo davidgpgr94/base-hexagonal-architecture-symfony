@@ -44,6 +44,7 @@ class CreateNeighbourUseCase
         $id = $this->generateNeighbourId();
 
         $neighbour = new Neighbour($id, $command->getEmail(), $command->getFirstname(), $command->getLastname(), $encodedPassword);
+        $neighbour->setTimestamps();
         $this->neighbourRepository->save($neighbour);
 
         return new CreateNeighbourResponse($neighbour);

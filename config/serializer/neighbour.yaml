@@ -2,3 +2,9 @@ App\Domain\Neighbour\Neighbour:
   attributes:
     password:
       ignore: true
+    timestamps:
+      ignore: true
+    createdAt:
+      ignore: true
+    updatedAt:
+      ignore: true

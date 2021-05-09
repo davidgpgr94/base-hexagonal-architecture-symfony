@@ -3,6 +3,7 @@
 
 namespace App\Infrastructure\Persistence\Doctrine\Neighbour;
 
+use DateTime;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -37,6 +38,16 @@ class Neighbour
      * @ORM\Column(type="string")
      */
     private string $password;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=false, options={"default": "CURRENT_TIMESTAMP"})
+     */
+    private DateTime $createdAt;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=false, options={"default": "CURRENT_TIMESTAMP"})
+     */
+    private DateTime $updatedAt;
 
     /**
      * Neighbour constructor.
@@ -126,6 +137,40 @@ class Neighbour
     public function setPassword(string $password): Neighbour
     {
         $this->password = $password;
+        return $this;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getCreatedAt(): DateTime
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param DateTime $createdAt
+     */
+    public function setCreatedAt(DateTime $createdAt): Neighbour
+    {
+        $this->createdAt = $createdAt;
+        return $this;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getUpdatedAt(): DateTime
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @param DateTime $updatedAt
+     */
+    public function setUpdatedAt(DateTime $updatedAt): Neighbour
+    {
+        $this->updatedAt = $updatedAt;
         return $this;
     }
 }
